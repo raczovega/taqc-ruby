@@ -4,7 +4,7 @@
 require 'selenium-webdriver'
 require_relative 'login_to_infrastructure'
 
-#launch the chrome browsercler
+#launch the chrome browser
 driver=Selenium::WebDriver.for:chrome 
 
 login_to_infrastructure(driver)
