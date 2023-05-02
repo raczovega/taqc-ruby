@@ -1,7 +1,6 @@
 #This test verifies that the production state of a device is configured correctly
 #Owner: Abigail Fraijo
 
-#require selenium-webdriver gem
 require 'selenium-webdriver'
 require_relative 'login_to_infrastructure'
 
@@ -47,9 +46,9 @@ sleep 2
 production_state_text=driver.find_element(:xpath,"//*[@id='tbtext-1360']")
 
 if production_state_text.text==state_option[i]
-    puts "#{state_option[i]} it was set correctly"
+    puts "#{state_option[i]} was set correctly"
 else
-    puts "#{state_option[i]} it was not set correctly"
+    puts "#{state_option[i]} was not set correctly"
 end
 
 i+=1
