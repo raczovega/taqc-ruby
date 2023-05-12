@@ -1,0 +1,10 @@
+devices:
+  - name: qa-ubuntu-11
+    path: //*[@id='gridview-1079']/table/tbody/tr[30]/td[1]/div/a
+    case_escenario: production_state
+  - name: qa-ubuntu-13
+    path: //*[@id="gridview-1079"]/table/tbody/tr[32]/td[1]/div/a
+    case_escenario: check_graphs
+  - name: qa-ubuntu-14
+    path: //*[@id='gridview-1079']/table/tbody/tr[33]/td[1]/div/a
+    case_escenario: check_details
