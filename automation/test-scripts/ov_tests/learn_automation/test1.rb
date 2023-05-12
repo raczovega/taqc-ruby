@@ -3,6 +3,7 @@ require "selenium-webdriver"
 # Create a new Firefox browser instance
 driver = Selenium::WebDriver.for :firefox
 
+
 # Navigate to the login page
 driver.navigate.to "https://practicetestautomation.com/practice-test-login/"
 
