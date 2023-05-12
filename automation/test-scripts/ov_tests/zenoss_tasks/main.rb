@@ -1,54 +1,36 @@
 require "selenium-webdriver"
 require_relative 'login'
+require_relative 'find_details'
 require "json"
 
-# Create a new Firefox browser instance
-driver = Selenium::WebDriver.for :firefox
+require 'minitest/autorun'
 
-# Login using the login function from the login.rb file
-login(driver)
-driver.manage.timeouts.implicit_wait = 10 # timeout for the driver to wait for an element
+class LoginTest < Minitest::Test
+  def setup
+    # Create a new Firefox browser instance
+    @driver = Selenium::WebDriver.for :firefox
+  end
 
-#click on explore cz
-driver.find_element(:xpath,"//*[@id='app']/div/header/div/div/a[7]").click
+  def teardown
+    # Close the browser window
+    @driver.quit
+  end
 
-#click on qa-ubuntu-14 device
-driver.find_element(:xpath,"//*[@id='gridview-1079']/table/tbody/tr[33]/td[1]/div/a").click
-driver.manage.timeouts.implicit_wait = 5 # timeout for the driver to wait for an element
- 
-#Select HardDisks
-components_hd = driver.find_element(:xpath, "//*[@id='treeview-1309']/table/tbody/tr[8]/td/div/span").click
-driver.manage.timeouts.implicit_wait = 5 # timeout for the driver to wait for an element
+  def test_successful_login
+    # Call the login method
+    login(@driver)
 
-#Select HD from list
-lists_hd = driver.find_element(:css, "tr.x-grid-row-alt:nth-child(13)")
-driver.manage.timeouts.implicit_wait = 5 # timeout for the driver to wait for an element
+    # Check if the login was successful
+    assert_equal("https://elm1403-test.zenoss.io/#/dashboard", @driver.current_url)
+    assert(@driver.find_element(class: "dashboard").displayed?)
+  end
 
-#Find details
-dropdown_menu = driver.find_element(:xpath,"//*[@id='detailnavcombo-1344-triggerWrap']").click
-driver.manage.timeouts.implicit_wait = 5 # timeout for the driver to wait for an element
+  def test_failed_login
+    # Call the login method with incorrect credentials
+    login(@driver)
 
-dropdown_item = driver.find_element(:css, 'li.x-boundlist-item:nth-child(3)').click
-
-element = driver.find_element(:css, "#contextcardpanel-1341-body")
-divs = element.find_elements(:css, "div")
-divs.each do |div|
-  puts div.text.strip
- 
+    # Check if the login failed and the user is still on the login page
+    assert_equal("https://elm1403-test.zenoss.io/#/login", @driver.current_url)
+    assert(@driver.find_element(class: "login").displayed?)
+  end
 end
-
-=begin
-element = driver.find_element(:css, "#contextcardpanel-1341-body")
-divs = element.find_elements(:css, "div")
-data = []
-divs.each do |div|
-  data << div.text.strip
-end
-
-# Save data to JSON file
-File.open("details.json", "w") do |f|
-  f.write(JSON.pretty_generate(data))
-end
-=end
-# Close the browser window
-driver.quit
